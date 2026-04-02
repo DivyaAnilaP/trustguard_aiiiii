@@ -36,7 +36,7 @@ const ImageAnalysisPanel = ({ onAnalyze, result, isLoading }: ImageAnalysisPanel
       <div className="flex items-center gap-2 mb-4">
         <ImageIcon className="w-5 h-5 text-primary" />
         <h3 className="font-semibold text-foreground">Image Analysis</h3>
-        <span className="ml-auto text-xs font-mono text-muted-foreground">CNN Engine</span>
+        <span className="ml-auto text-xs font-mono text-muted-foreground">MobileNetV2</span>
       </div>
 
       <div

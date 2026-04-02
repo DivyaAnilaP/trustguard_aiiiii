@@ -31,7 +31,7 @@ const TextAnalysisPanel = ({ onAnalyze, result, isLoading }: TextAnalysisPanelPr
       <div className="flex items-center gap-2 mb-4">
         <FileText className="w-5 h-5 text-primary" />
         <h3 className="font-semibold text-foreground">Text Analysis</h3>
-        <span className="ml-auto text-xs font-mono text-muted-foreground">NLP Engine</span>
+        <span className="ml-auto text-xs font-mono text-muted-foreground">DistilBERT</span>
       </div>
 
       <textarea
