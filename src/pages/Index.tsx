@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import HeroSection from "@/components/HeroSection";
+import SystemArchitecture from "@/components/SystemArchitecture";
 import TextAnalysisPanel from "@/components/TextAnalysisPanel";
 import ImageAnalysisPanel from "@/components/ImageAnalysisPanel";
 import TrustScoreGauge from "@/components/TrustScoreGauge";
