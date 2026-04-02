@@ -133,6 +133,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection onGetStarted={handleGetStarted} />
+      <SystemArchitecture />
 
       {showAnalysis && (
         <section ref={analysisRef} className="max-w-6xl mx-auto px-6 py-16">
