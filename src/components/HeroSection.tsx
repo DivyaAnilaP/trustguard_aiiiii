@@ -2,9 +2,9 @@ import heroShield from "@/assets/hero-shield.png";
 import { Shield, Zap, Eye, BarChart3 } from "lucide-react";
 
 const features = [
-  { icon: Shield, label: "Text Verification", desc: "AI-powered fake content detection" },
-  { icon: Eye, label: "Deepfake Detection", desc: "CNN-based image analysis" },
-  { icon: BarChart3, label: "Trust Scoring", desc: "Multimodal fusion engine" },
+  { icon: Shield, label: "Text Verification", desc: "DistilBERT NLP classifier" },
+  { icon: Eye, label: "Deepfake Detection", desc: "MobileNetV2 vision model" },
+  { icon: BarChart3, label: "Explainability", desc: "SHAP + Grad-CAM insights" },
   { icon: Zap, label: "Real-Time", desc: "Instant analysis results" },
 ];
 
