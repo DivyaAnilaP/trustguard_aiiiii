@@ -21,17 +21,15 @@ const RingGauge = ({ score, size = 120, strokeWidth = 8, label, sublabel }: Ring
   const center = size / 2;
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-3 mt-2">
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="overflow-visible -rotate-90">
-          {/* Background ring */}
           <circle
             cx={center} cy={center} r={radius}
             fill="none"
             stroke="hsl(222, 30%, 18%)"
             strokeWidth={strokeWidth}
           />
-          {/* Score ring */}
           <circle
             cx={center} cy={center} r={radius}
             fill="none"
@@ -41,18 +39,26 @@ const RingGauge = ({ score, size = 120, strokeWidth = 8, label, sublabel }: Ring
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             className="transition-all duration-1000 ease-out"
-            style={{ filter: `drop-shadow(0 0 6px ${color})` }}
+            style={{ filter: `drop-shadow(0 0 8px ${color})` }}
           />
         </svg>
-        {/* Center text */}
+
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-bold text-foreground" style={{ fontSize: size * 0.22 }}>{score}%</span>
-          <span className="font-mono font-semibold text-xs" style={{ color, fontSize: size * 0.09 }}>{status}</span>
+          <span className="font-bold text-foreground" style={{ fontSize: size * 0.22 }}>
+            {score}%
+          </span>
+          <span
+            className="font-mono font-semibold text-xs"
+            style={{ color, fontSize: size * 0.09 }}
+          >
+            {status}
+          </span>
         </div>
       </div>
-      <div className="text-center">
-        <div className="text-xs text-muted-foreground">{label}</div>
-        <div className="text-xs text-muted-foreground/60 font-mono">{sublabel}</div>
+
+      <div className="text-center mt-2">
+        <div className="text-sm font-medium text-muted-foreground">{label}</div>
+        <div className="text-xs text-muted-foreground/60">{sublabel}</div>
       </div>
     </div>
   );
@@ -66,21 +72,50 @@ interface TrustScoreGaugeProps {
 
 const TrustScoreGauge = ({ fusedScore, textScore, imageScore }: TrustScoreGaugeProps) => {
   return (
-    <div className="glass-card p-6">
-      <h3 className="text-sm font-bold text-foreground tracking-wider uppercase mb-6">Trust Scores</h3>
-      <div className="flex items-end justify-center gap-4">
-        {/* Text gauge - smaller, left */}
+    <div className="glass-card p-10">
+      <h3 className="text-lg font-bold text-foreground tracking-wide uppercase mb-10 text-center">
+        Trust Scores
+      </h3>
+
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16">
+        
+        {/* Text gauge */}
         {textScore !== null && (
-          <RingGauge score={textScore} size={100} strokeWidth={6} label="Text (DistilBERT)" sublabel="" />
+          <div className="flex flex-col items-center">
+            <RingGauge
+              score={textScore}
+              size={110}
+              strokeWidth={7}
+              label="Text Analysis"
+              sublabel="DistilBERT"
+            />
+          </div>
         )}
 
-        {/* Fused gauge - larger, center */}
-        <RingGauge score={fusedScore} size={150} strokeWidth={10} label="Fused Trust Score" sublabel="" />
+        {/* Fused gauge (center focus) */}
+        <div className="flex flex-col items-center scale-110">
+          <RingGauge
+            score={fusedScore}
+            size={170}
+            strokeWidth={12}
+            label="Fused Score"
+            sublabel="Final Trust"
+          />
+        </div>
 
-        {/* Image gauge - smaller, right */}
+        {/* Image gauge */}
         {imageScore !== null && (
-          <RingGauge score={imageScore} size={100} strokeWidth={6} label="Image (MobileNetV2)" sublabel="" />
+          <div className="flex flex-col items-center">
+            <RingGauge
+              score={imageScore}
+              size={110}
+              strokeWidth={7}
+              label="Image Analysis"
+              sublabel="MobileNetV2"
+            />
+          </div>
         )}
+
       </div>
     </div>
   );
