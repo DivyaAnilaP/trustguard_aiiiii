@@ -158,8 +158,9 @@ const Index = () => {
             <div className="lg:col-span-1 flex flex-col gap-6">
               {hasResults ? (
                 <TrustScoreGauge
-                  score={trustScore}
-                  label={textResult && imageResult ? "Multimodal Fusion" : textResult ? "Text Only" : "Image Only"}
+                  fusedScore={trustScore}
+                  textScore={textScore}
+                  imageScore={imageScore}
                 />
               ) : (
                 <div className="glass-card p-6 flex-1 flex flex-col items-center justify-center text-center">

@@ -1,62 +1,86 @@
 import { useMemo } from "react";
 
-interface TrustScoreGaugeProps {
-  score: number; // 0-100
-  label?: string;
+interface RingGaugeProps {
+  score: number;
   size?: number;
+  strokeWidth?: number;
+  label: string;
+  sublabel: string;
 }
 
-const TrustScoreGauge = ({ score, label = "Trust Score", size = 180 }: TrustScoreGaugeProps) => {
-  const { color, glowClass, status } = useMemo(() => {
-    if (score >= 70) return { color: "hsl(142, 76%, 46%)", glowClass: "shadow-[0_0_30px_hsl(142,76%,46%,0.3)]", status: "Trustworthy" };
-    if (score >= 40) return { color: "hsl(38, 92%, 50%)", glowClass: "shadow-[0_0_30px_hsl(38,92%,50%,0.3)]", status: "Uncertain" };
-    return { color: "hsl(0, 72%, 51%)", glowClass: "shadow-[0_0_30px_hsl(0,72%,51%,0.3)]", status: "Suspicious" };
+const RingGauge = ({ score, size = 120, strokeWidth = 8, label, sublabel }: RingGaugeProps) => {
+  const { color, status } = useMemo(() => {
+    if (score >= 70) return { color: "hsl(160, 84%, 50%)", status: "AUTHENTIC" };
+    if (score >= 40) return { color: "hsl(38, 92%, 50%)", status: "UNCERTAIN" };
+    return { color: "hsl(0, 72%, 51%)", status: "SUSPICIOUS" };
   }, [score]);
 
-  const radius = (size - 20) / 2;
+  const radius = (size - strokeWidth * 2) / 2;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (score / 100) * circumference * 0.75;
+  const offset = circumference - (score / 100) * circumference;
   const center = size / 2;
 
   return (
-    <div className={`glass-card p-6 flex flex-col items-center ${glowClass} transition-shadow duration-500`}>
-      <svg width={size} height={size * 0.7} viewBox={`0 0 ${size} ${size * 0.85}`} className="overflow-visible">
-        {/* Background arc */}
-        <circle
-          cx={center} cy={center}
-          r={radius}
-          fill="none"
-          stroke="hsl(222, 30%, 18%)"
-          strokeWidth="10"
-          strokeLinecap="round"
-          strokeDasharray={`${circumference * 0.75} ${circumference * 0.25}`}
-          transform={`rotate(135, ${center}, ${center})`}
-        />
-        {/* Score arc */}
-        <circle
-          cx={center} cy={center}
-          r={radius}
-          fill="none"
-          stroke={color}
-          strokeWidth="10"
-          strokeLinecap="round"
-          strokeDasharray={`${circumference * 0.75} ${circumference * 0.25}`}
-          strokeDashoffset={strokeDashoffset}
-          transform={`rotate(135, ${center}, ${center})`}
-          className="transition-all duration-1000 ease-out"
-          style={{ filter: `drop-shadow(0 0 8px ${color})` }}
-        />
-        {/* Score text */}
-        <text x={center} y={center - 5} textAnchor="middle" className="fill-foreground text-4xl font-bold" style={{ fontSize: 36 }}>
-          {score}
-        </text>
-        <text x={center} y={center + 20} textAnchor="middle" className="fill-muted-foreground text-xs font-mono" style={{ fontSize: 11 }}>
-          / 100
-        </text>
-      </svg>
-      <div className="text-center mt-2">
-        <div className="text-sm font-semibold" style={{ color }}>{status}</div>
-        <div className="text-xs text-muted-foreground font-mono">{label}</div>
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg width={size} height={size} className="overflow-visible -rotate-90">
+          {/* Background ring */}
+          <circle
+            cx={center} cy={center} r={radius}
+            fill="none"
+            stroke="hsl(222, 30%, 18%)"
+            strokeWidth={strokeWidth}
+          />
+          {/* Score ring */}
+          <circle
+            cx={center} cy={center} r={radius}
+            fill="none"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            className="transition-all duration-1000 ease-out"
+            style={{ filter: `drop-shadow(0 0 6px ${color})` }}
+          />
+        </svg>
+        {/* Center text */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="font-bold text-foreground" style={{ fontSize: size * 0.22 }}>{score}%</span>
+          <span className="font-mono font-semibold text-xs" style={{ color, fontSize: size * 0.09 }}>{status}</span>
+        </div>
+      </div>
+      <div className="text-center">
+        <div className="text-xs text-muted-foreground">{label}</div>
+        <div className="text-xs text-muted-foreground/60 font-mono">{sublabel}</div>
+      </div>
+    </div>
+  );
+};
+
+interface TrustScoreGaugeProps {
+  fusedScore: number;
+  textScore: number | null;
+  imageScore: number | null;
+}
+
+const TrustScoreGauge = ({ fusedScore, textScore, imageScore }: TrustScoreGaugeProps) => {
+  return (
+    <div className="glass-card p-6">
+      <h3 className="text-sm font-bold text-foreground tracking-wider uppercase mb-6">Trust Scores</h3>
+      <div className="flex items-end justify-center gap-4">
+        {/* Text gauge - smaller, left */}
+        {textScore !== null && (
+          <RingGauge score={textScore} size={100} strokeWidth={6} label="Text (DistilBERT)" sublabel="" />
+        )}
+
+        {/* Fused gauge - larger, center */}
+        <RingGauge score={fusedScore} size={150} strokeWidth={10} label="Fused Trust Score" sublabel="" />
+
+        {/* Image gauge - smaller, right */}
+        {imageScore !== null && (
+          <RingGauge score={imageScore} size={100} strokeWidth={6} label="Image (MobileNetV2)" sublabel="" />
+        )}
       </div>
     </div>
   );
