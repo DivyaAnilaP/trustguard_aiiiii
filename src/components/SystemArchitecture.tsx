@@ -3,7 +3,7 @@ import { FileText, Cpu, Eye, GitMerge, BarChart3, Shield } from "lucide-react";
 const steps = [
   { icon: FileText, label: "Input Layer", desc: "Text / Image / Both", color: "text-primary" },
   { icon: Cpu, label: "Preprocessing", desc: "Tokenize & Transform", color: "text-primary" },
-  { icon: Eye, label: "ML Models", desc: "DistilBERT + MobileNetV2", color: "text-primary" },
+  { icon: Eye, label: "DL Models", desc: "DistilBERT + MobileNetV2", color: "text-primary" },
   { icon: GitMerge, label: "Trust Fusion", desc: "Weighted Score Merge", color: "text-success" },
   { icon: BarChart3, label: "Explainability", desc: "SHAP + Grad-CAM", color: "text-chart-4" },
 ];
