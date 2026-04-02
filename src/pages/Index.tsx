@@ -128,6 +128,8 @@ const Index = () => {
   };
 
   const trustScore = computeTrustScore();
+  const textScore = textResult ? Math.round(textResult.label === "REAL" ? textResult.confidence * 100 : (1 - textResult.confidence) * 100) : null;
+  const imageScore = imageResult ? Math.round(imageResult.label === "AUTHENTIC" ? imageResult.confidence * 100 : (1 - imageResult.confidence) * 100) : null;
   const hasResults = textResult || imageResult;
 
   return (
