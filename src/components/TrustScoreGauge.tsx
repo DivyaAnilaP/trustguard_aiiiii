@@ -72,12 +72,13 @@ interface TrustScoreGaugeProps {
 
 const TrustScoreGauge = ({ fusedScore, textScore, imageScore }: TrustScoreGaugeProps) => {
   return (
-    <div className="glass-card p-10">
-      <h3 className="text-lg font-bold text-foreground tracking-wide uppercase mb-10 text-center">
+    <div className="glass-card p-12 lg:p-16 w-full max-w-5xl mx-auto min-h-[320px]">
+      
+      <h3 className="text-lg font-bold text-foreground tracking-wide uppercase mb-12 text-center">
         Trust Scores
       </h3>
 
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16">
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20 py-6">
         
         {/* Text gauge */}
         {textScore !== null && (
@@ -92,7 +93,7 @@ const TrustScoreGauge = ({ fusedScore, textScore, imageScore }: TrustScoreGaugeP
           </div>
         )}
 
-        {/* Fused gauge (center focus) */}
+        {/* Fused gauge */}
         <div className="flex flex-col items-center scale-110">
           <RingGauge
             score={fusedScore}
