@@ -128,6 +128,8 @@ const Index = () => {
   };
 
   const trustScore = computeTrustScore();
+  const textScore = textResult ? Math.round(textResult.label === "REAL" ? textResult.confidence * 100 : (1 - textResult.confidence) * 100) : null;
+  const imageScore = imageResult ? Math.round(imageResult.label === "AUTHENTIC" ? imageResult.confidence * 100 : (1 - imageResult.confidence) * 100) : null;
   const hasResults = textResult || imageResult;
 
   return (
@@ -156,8 +158,9 @@ const Index = () => {
             <div className="lg:col-span-1 flex flex-col gap-6">
               {hasResults ? (
                 <TrustScoreGauge
-                  score={trustScore}
-                  label={textResult && imageResult ? "Multimodal Fusion" : textResult ? "Text Only" : "Image Only"}
+                  fusedScore={trustScore}
+                  textScore={textScore}
+                  imageScore={imageScore}
                 />
               ) : (
                 <div className="glass-card p-6 flex-1 flex flex-col items-center justify-center text-center">
